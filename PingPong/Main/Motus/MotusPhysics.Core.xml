@@ -1,0 +1,234 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MotusPhysics.Core</name>
+    </assembly>
+    <members>
+        <member name="M:MotusPhysics.Core.Logging.Logger.EnableLogging">
+            <summary>
+            Enables logging.
+            Enabled by default.
+            </summary>
+        </member>
+        <member name="M:MotusPhysics.Core.Logging.Logger.DisableLogging">
+            <summary>
+            Disables logging of all messages.
+            </summary>
+        </member>
+        <member name="M:MotusPhysics.Core.Logging.Logger.EnableWarnings">
+            <summary>
+            Enables logging of warnings.
+            Enabled by default.
+            </summary>
+        </member>
+        <member name="M:MotusPhysics.Core.Logging.Logger.DisableWarnings">
+            <summary>
+            Disables logging of warnings.
+            </summary>
+        </member>
+        <member name="M:MotusPhysics.Core.Logging.Logger.EnableErrors">
+            <summary>
+            Enables logging of errors.
+            Enabled by default.
+            </summary>
+        </member>
+        <member name="M:MotusPhysics.Core.Logging.Logger.DisableErrors">
+            <summary>
+            Disables logging of errors.
+            </summary>
+        </member>
+        <member name="M:MotusPhysics.Core.Logging.Logger.Log(System.String)">
+            <summary>
+            Writes a message to the console with this logger object as its source.
+            </summary>
+            <param name="message">Message to be written.</param>
+        </member>
+        <member name="M:MotusPhysics.Core.Logging.Logger.LogWarning(System.String)">
+            <summary>
+            Writes a warning message to the console with this logger object as its source.
+            </summary>
+            <param name="warningMessage">Warning to be written.</param>
+        </member>
+        <member name="M:MotusPhysics.Core.Logging.Logger.LogError(System.String)">
+            <summary>
+            Writes an error message to the console with this logger object as its source.
+            </summary>
+            <param name="errorMessage">Error to be written.</param>
+        </member>
+        <member name="P:MotusPhysics.Core.Motus.Logger">
+            <summary>
+            Default Motus logger object for printing to the console.
+            </summary>
+        </member>
+        <member name="M:MotusPhysics.Core.Motus.Initialize">
+            <summary>
+            Initializes Motus.
+            Initializes all installed Motus modules.
+            If you want to configure specific modules it should be done before calling this method.
+            </summary>
+        </member>
+        <member name="M:MotusPhysics.Core.Motus.Update">
+            <summary>
+            Update the physics system.
+            Call this once every iteration of the main game loop.
+            Motus must be initialized.
+            </summary>
+        </member>
+        <member name="M:MotusPhysics.Core.Motus.SetModulePath(System.String)">
+            <summary>
+            Set the path to directory where Motus# modules will be loaded from.
+            </summary>
+        </member>
+        <member name="M:MotusPhysics.Core.Motus.SetPhysicsUpdateRate(System.Int32)">
+            <summary>
+            Set the amount of physics updates to do each second.
+            Higher values will take up more computing power.
+            </summary>
+            <param name="stepsPerSecond"></param>
+        </member>
+        <member name="M:MotusPhysics.Core.Motus.Shutdown">
+            <summary>
+            Stops the physics thread and all loaded modules.
+            </summary>
+        </member>
+        <member name="F:MotusPhysics.Core.Physics.Colliders.AABB.Min">
+            <summary>
+            The point of minimum x and y values of the collision shape relative to its position
+            </summary>
+        </member>
+        <member name="F:MotusPhysics.Core.Physics.Colliders.AABB.Max">
+            <summary>
+            The point of maximum x and y values of the collision shape relative to its position
+            </summary>
+        </member>
+        <member name="M:MotusPhysics.Core.Physics.Colliders.Collider.OverlapAABB(MotusPhysics.Core.Physics.Colliders.Collider,MotusPhysics.Core.Physics.Colliders.Collider)">
+            <summary>
+            Returns true if the axis aligned bounding boxes of the two colliders are overlapping
+            </summary>
+            <param name="colliderA"></param>
+            <param name="colliderB"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MotusPhysics.Core.Physics.PhysicsManager.AddRigidbody(MotusPhysics.Core.Physics.RigidBody)">
+            <summary>
+            Schedule a rigidBody to be added into the system.
+            The actual addition will occur on the following physics step.
+            </summary>
+            <param name="rigidBody"></param>
+        </member>
+        <member name="M:MotusPhysics.Core.Physics.PhysicsManager.RemoveRigidbody(MotusPhysics.Core.Physics.RigidBody)">
+            <summary>
+             Schedule a rigidBody to be removed from the system.
+            The actual removal will occur on the following physics step.
+            </summary>
+            <param name="rigidBody"></param>
+        </member>
+        <member name="P:MotusPhysics.Core.Physics.RigidBody.Velocity">
+            <summary>
+            Velocity in meters per second
+            </summary>
+        </member>
+        <member name="P:MotusPhysics.Core.Physics.RigidBody.Rotation">
+            <summary>
+            Current rotation in degrees
+            </summary>
+        </member>
+        <member name="P:MotusPhysics.Core.Physics.RigidBody.AngularVelocity">
+            <summary>
+            Rotational velocity in radians per second
+            </summary>
+        </member>
+        <member name="P:MotusPhysics.Core.Physics.RigidBody.AngularVelocityDegrees">
+            <summary>
+            Rotational velocity in degrees per second
+            </summary>
+        </member>
+        <member name="P:MotusPhysics.Core.Physics.RigidBody.Mass">
+            <summary>
+            Arbitrary value for the mass of the rigidBody.
+            Represents the resistance to change in velocity upon collision.
+            </summary>
+        </member>
+        <member name="P:MotusPhysics.Core.Physics.RigidBody.Inertia">
+            <summary>
+            Arbitrary value for the moment of inertia of the rigidBody.
+            Represents the resistance to change in angular velocity upon collision.
+            </summary>
+        </member>
+        <member name="P:MotusPhysics.Core.Physics.RigidBody.Gravity">
+            <summary>
+            Gravitational force and direction.
+            The magnitude of the gravity vector represents the velocity change in meters/second per second.
+            </summary>
+        </member>
+        <member name="P:MotusPhysics.Core.Physics.RigidBody.Restitution">
+            <summary>
+            The bounciness of the object, upon collision.
+            0 -> Perfect inelastic (objects will stick)
+            1 -> Perfect elastic (full bounce, no energy loss)
+            </summary>
+        </member>
+        <member name="M:MotusPhysics.Core.Physics.RigidBody.SetPosition(MotusPhysics.Core.Utility.Vector)">
+            <summary>
+            Set the absolute position of the rigidBody to a new position.
+            </summary>
+            <param name="position"></param>
+        </member>
+        <member name="M:MotusPhysics.Core.Physics.RigidBody.TranslatePosition(MotusPhysics.Core.Utility.Vector)">
+            <summary>
+            Moves the rigidBody by the specified translation value.
+            </summary>
+            <param name="translation"></param>
+        </member>
+        <member name="M:MotusPhysics.Core.Physics.RigidBody.SetRotation(System.Double)">
+            <summary>
+            Sets the absolute rotation of the rigidBody in degrees.
+            </summary>
+            <param name="degrees"></param>
+        </member>
+        <member name="M:MotusPhysics.Core.Physics.RigidBody.Rotate(System.Double)">
+            <summary>
+            Rotates the rigidBody by a specified amount of degrees.
+            </summary>
+            <param name="degrees"></param>
+        </member>
+        <member name="F:MotusPhysics.Core.Time.TimeScale">
+            <summary>
+            The simulation timescale.
+            Change this value to speed up, or slow down the simulation.
+            Large values will have an effect on the robustness of the simulation.
+            !!! Not currently completely stable, might have an impact on simulation !!!
+            </summary>
+        </member>
+        <member name="P:MotusPhysics.Core.Time.SimStep">
+            <summary>
+            The number of simulation steps that have been run so far
+            </summary>
+        </member>
+        <member name="P:MotusPhysics.Core.Time.ElapsedTime">
+            <summary>
+            Time in seconds since Motus Sharp was initialized.
+            </summary>
+        </member>
+        <member name="P:MotusPhysics.Core.Time.DeltaTime">
+            <summary>
+            Most recent time between Motus update calls.
+            </summary>
+        </member>
+        <member name="P:MotusPhysics.Core.Time.FixedDeltaTime">
+            <summary>
+            Most recent time between physics step calls
+            </summary>
+        </member>
+        <member name="P:MotusPhysics.Core.Time.FixedTimeStep">
+            <summary>
+            The fixed time for each physics step
+            </summary>
+        </member>
+        <member name="P:MotusPhysics.Core.Time.LastStepMilliseconds">
+            <summary>
+            The time spent completing the last physics step. In milliseconds.
+            </summary>
+        </member>
+    </members>
+</doc>
