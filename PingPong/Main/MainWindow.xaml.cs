@@ -24,29 +24,14 @@ public partial class MainWindow : Window
 
     private DispatcherTimer timer;
     private RigidBody circleBody;
-
-    private RigidBody player1;
-    private float player1Speed = 100f;
-    private float player1Width = 50f;
-    private float player1Height = 100f;
-    private float player1X = 50f;
-    private float player1Y = 225f;
-    private int player1Score = 0;
     
-    private RigidBody player2;
-    private float player2Speed = 100f;
-    private float player2Width = 50f;
-    private float player2Height = 100f;
-    private float player2X = 700f;
-    private float player2Y = 225f;
-    private int player2Score = 0;
+    private Player player1;
+    private Player player2;
     
     private Random random = new Random();
     
     public MainWindow()
     {
-        this.KeyDown += OnKeyDown;
-        this.KeyUp += OnKeyUp;
         InitializeComponent();
         Motus.Initialize();
         
@@ -58,13 +43,21 @@ public partial class MainWindow : Window
         circleBody = RigidBody.CreateRigidBody(Collider.CreateCircleCollider(radius), position: new Vector(circleX, circleY), restitution: 0.8d);
         circleBody.AddVelocity(new Vector(velocityX, 0));
         
-        player1 = RigidBody.CreateRigidBody(Collider.CreateRectangleCollider(new Vector(player1Width, player1Height)), position: new Vector(player1X, player1Y), restitution: 0.8d);
-        player1.OnCollisionEnterSubscribe(OnPlayer1CollisionEnter);
-        Console.WriteLine(player1.Id);
+        player1 = new Player(700f, 225f);
+        player1.Body.OnCollisionEnterSubscribe(OnPlayer1CollisionEnter);
+        this.KeyDown += player1.OnKeyDown;
+        this.KeyUp += player1.OnKeyUp;
+        player1.KeyBindings.Add("Up", Key.W);
+        player1.KeyBindings.Add("Down", Key.S);
+        Console.WriteLine(player1.Body.Id);
         
-        player2 = RigidBody.CreateRigidBody(Collider.CreateRectangleCollider(new Vector(player2Width, player2Height)), position: new Vector(player2X, player2Y), restitution: 0.8d);
-        player2.OnCollisionEnterSubscribe(OnPlayer2CollisionEnter);
-        Console.WriteLine(player2.Id);
+        player2 = new Player(100f, 225f);
+        player2.Body.OnCollisionEnterSubscribe(OnPlayer2CollisionEnter);
+        this.KeyDown += player2.OnKeyDown;
+        this.KeyUp += player2.OnKeyUp;
+        player2.KeyBindings.Add("Up", Key.Up);
+        player2.KeyBindings.Add("Down", Key.Down);
+        Console.WriteLine(player2.Body.Id);
     }
 
     private void OnPlayer2CollisionEnter(CollisionManifold manifold)
@@ -79,40 +72,6 @@ public partial class MainWindow : Window
         velocityX = -velocityX;
         Console.WriteLine(manifold.RigidBodyA.Id);
         manifold.RigidBodyA.SetVelocity(new Vector(velocityX, random.Next(-100, 100)));
-    }
-
-    private void OnKeyUp(object sender, KeyEventArgs e)
-    {
-        if (e.Key == Key.W || e.Key == Key.S)
-        {
-            player1.SetVelocity(new Vector(0, 0));
-        }
-        
-        if (e.Key == Key.Up || e.Key == Key.Down)
-        {
-            player2.SetVelocity(new Vector(0, 0));
-        }
-    }
-
-    private void OnKeyDown(object sender, KeyEventArgs e)
-    {
-        if (e.Key == Key.W)
-        {
-            player1.SetVelocity(new Vector(0, -player1Speed));
-        }
-        else if (e.Key == Key.S)
-        {
-            player1.SetVelocity(new Vector(0, player1Speed));
-        }
-        
-        if (e.Key == Key.Up)
-        {
-            player2.SetVelocity(new Vector(0, -player2Speed));
-        }
-        else if (e.Key == Key.Down)
-        {
-            player2.SetVelocity(new Vector(0, player2Speed));
-        }
     }
 
     private void Timer_Tick(object sender, System.EventArgs e)
@@ -130,15 +89,15 @@ public partial class MainWindow : Window
         
         if (circleBody.Position.x - radius < 0)
         {
-            player2Score++;
+            player2.Score++;
             circleBody.SetPosition(new Vector(circleX, circleY));
-            circleBody.AddVelocity(new Vector(-velocityX, 0));
+            circleBody.SetVelocity(new Vector(-velocityX, 0));
         }
         else if (circleBody.Position.x + radius > (float)SkiaCanvas.ActualWidth)
         {
-            player1Score++;
+            player1.Score++;
             circleBody.SetPosition(new Vector(circleX, circleY));
-            circleBody.AddVelocity(new Vector(velocityX, 0));
+            circleBody.SetVelocity(new Vector(velocityX, 0));
         }
 
         SkiaCanvas.InvalidateVisual(); // Triggers PaintSurface
@@ -172,11 +131,14 @@ public partial class MainWindow : Window
             Color = SKColors.Green,
             IsAntialias = true
         };
+        
+        var player1Position = player1.GetPosition();
+        var player2Position = player2.GetPosition();
 
         canvas.DrawCircle((float)circleBody.Position.x, (float)circleBody.Position.y, radius, paint);
-        canvas.DrawRect((float)player1.Position.x, (float)player1.Position.y, player1Width, player1Height, playerPaint);
-        canvas.DrawRect((float)player2.Position.x, (float)player2.Position.y, player2Width, player2Height, player2Paint);
-        canvas.DrawText($"Player 1: {player1Score}", 10, 20, TextPaint);
-        canvas.DrawText($"Player 2: {player2Score}", (float)SkiaCanvas.ActualWidth - 100, 20, TextPaint);
+        canvas.DrawRect((float)player1Position.x, (float)player1Position.y, player1.Width, player1.Height, playerPaint);
+        canvas.DrawRect((float)player2Position.x, (float)player2Position.y, player2.Width, player2.Height, player2Paint);
+        canvas.DrawText($"Player 1: {player1.Score}", 10, 20, TextPaint);
+        canvas.DrawText($"Player 2: {player2.Score}", (float)SkiaCanvas.ActualWidth - 100, 20, TextPaint);
     }
 }
